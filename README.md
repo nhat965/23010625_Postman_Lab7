@@ -101,56 +101,76 @@ npm run report:serve
 
 Sau đó mở `http://127.0.0.1:8765`.
 
-## 7. Kết quả thực hiện
+## 7. Kết quả kiểm thử trên Postman
 
-Lần chạy xác minh ngày 07/10/2026 cho kết quả:
+Collection đã được chạy lại trực tiếp bằng Postman. Kết quả tổng thể: **6 request, 20 assertion, 0 failure**.
 
-| Chỉ số | Kết quả |
-|---|---:|
-| Iteration | 1 |
-| Request đã chạy | 6 |
-| Request thất bại | 0 |
-| Test script đã chạy | 6 |
-| Assertion đã chạy | 20 |
-| Assertion thất bại | 0 |
-| Tổng thời gian | 2,4 giây |
-| Thời gian phản hồi trung bình | 331 ms |
+### 7.1. GET /posts/1 — Lấy chi tiết bài viết
 
-### 7.1. GET chi tiết bài viết
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **263 ms**
+- Assertions: **5/5 PASS**
 
-Request `GET /posts/1` trả về `200 OK`, đúng bài viết có `id = 1` và đạt 5/5 test.
+![GET posts 1 - Postman test result](output/postman/get-post-detail.png)
 
-![GET chi tiết bài viết](output/postman/get-post-detail.png)
+### 7.2. GET /posts?userId=1 — Lọc bài viết theo userId
 
-### 7.2. GET danh sách bài viết theo người dùng
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **270 ms**
+- Assertions: **4/4 PASS**
 
-Request `GET /posts?userId=1` sử dụng query parameter `userId`, trả về danh sách 10 bài viết và đạt 4/4 test.
+![GET posts theo userId - Postman test result](output/postman/get-posts-by-user.png)
 
-![GET danh sách bài viết theo userId](output/postman/get-posts-by-user.png)
+### 7.3. POST /posts — Tạo bài viết
 
-### 7.3. POST tạo bài viết
+- Kết quả mong đợi: `201 Created`
+- Kết quả thực tế: `201 Created`
+- Response time: **345 ms**
+- Assertions: **4/4 PASS**
 
-Request `POST /posts` trả về `201 Created`, phản hồi có đầy đủ `title`, `body`, `userId` và `id = 101`; 4/4 test đạt.
+![POST tạo bài viết - Postman test result](output/postman/post-create.png)
 
-![POST tạo bài viết](output/postman/post-create.png)
+### 7.4. PUT /posts/1 — Cập nhật bài viết
 
-### 7.4. PUT cập nhật bài viết
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **515 ms**
+- Assertions: **3/3 PASS**
 
-Request `PUT /posts/1` trả về `200 OK`; tiêu đề và nội dung trong response đã được cập nhật, 3/3 test đạt.
+![PUT cập nhật bài viết - Postman test result](output/postman/put-update.png)
 
-![PUT cập nhật bài viết](output/postman/put-update.png)
+### 7.5. DELETE /posts/1 — Xóa bài viết
 
-### 7.5. DELETE bài viết
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **523 ms**
+- Assertions: **2/2 PASS**
 
-Request `DELETE /posts/1` trả về `200 OK` và đạt 2/2 test.
+![DELETE bài viết - Postman test result](output/postman/delete-post.png)
 
-![DELETE bài viết](output/postman/delete-post.png)
+### 7.6. GET /posts/999 — Negative test
 
-### 7.6. Kiểm tra tài nguyên không tồn tại
+- Kết quả mong đợi: `404 Not Found`
+- Kết quả thực tế: `404 Not Found`
+- Response time: **431 ms**
+- Assertions: **2/2 PASS**
+- Đây là kiểm thử âm nên response `404` là kết quả đúng và testcase được tính **PASS**.
 
-Request `GET /posts/999` trả về `404 Not Found` đúng như mong đợi của ca kiểm thử âm và đạt 2/2 test.
+![GET tài nguyên không tồn tại - Postman test result](output/postman/get-not-found.png)
 
-![GET tài nguyên không tồn tại](output/postman/get-not-found.png)
+### 7.7. Tổng quan Collection Run
+
+| STT | Request | Status | Assertions | Kết quả |
+|---:|---|---:|---:|---|
+| 1 | `GET /posts/1` | 200 | 5/5 | PASS |
+| 2 | `GET /posts?userId=1` | 200 | 4/4 | PASS |
+| 3 | `POST /posts` | 201 | 4/4 | PASS |
+| 4 | `PUT /posts/1` | 200 | 3/3 | PASS |
+| 5 | `DELETE /posts/1` | 200 | 2/2 | PASS |
+| 6 | `GET /posts/999` | 404 | 2/2 | PASS |
+| | **Tổng** | | **20/20** | **PASS** |
 
 ## 8. Nhận xét
 
