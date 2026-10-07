@@ -1,0 +1,169 @@
+{
+  "info": {
+    "_postman_id": "d997886d-2a84-40ab-a292-230106250001",
+    "name": "JSONPlaceholder API Testing - 23010625",
+    "description": "Bộ kiểm thử REST API minh họa các phương thức GET, POST, PUT, DELETE, biến môi trường và test script trong Postman.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - GET chi tiết bài viết",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "1"]
+        },
+        "description": "Lấy bài viết có id = 1."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status code là 200', () => pm.response.to.have.status(200));",
+            "pm.test('Response có kiểu JSON', () => pm.response.to.be.json);",
+            "pm.test('Đúng bài viết id = 1', () => pm.expect(pm.response.json().id).to.eql(1));",
+            "pm.test('Có đủ các trường chính', () => pm.expect(pm.response.json()).to.include.all.keys('userId', 'id', 'title', 'body'));",
+            "pm.test('Thời gian phản hồi dưới 2000 ms', () => pm.expect(pm.response.responseTime).to.be.below(2000));"
+          ],
+          "type": "text/javascript"
+        }
+      }]
+    },
+    {
+      "name": "02 - GET danh sách theo userId",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts?userId=1",
+          "host": ["{{base_url}}"],
+          "path": ["posts"],
+          "query": [{"key": "userId", "value": "1"}]
+        },
+        "description": "Lọc danh sách bài viết theo query parameter userId."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status code là 200', () => pm.response.to.have.status(200));",
+            "pm.test('Kết quả là một mảng', () => pm.expect(pm.response.json()).to.be.an('array'));",
+            "pm.test('User 1 có 10 bài viết', () => pm.expect(pm.response.json()).to.have.lengthOf(10));",
+            "pm.test('Mọi phần tử đều thuộc userId = 1', () => pm.expect(pm.response.json().every(item => item.userId === 1)).to.be.true);"
+          ],
+          "type": "text/javascript"
+        }
+      }]
+    },
+    {
+      "name": "03 - POST tạo bài viết",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Bài thực hành Postman\",\n  \"body\": \"Kiểm thử API bằng Postman và Newman\",\n  \"userId\": 1\n}",
+          "options": {"raw": {"language": "json"}}
+        },
+        "url": {
+          "raw": "{{base_url}}/posts",
+          "host": ["{{base_url}}"],
+          "path": ["posts"]
+        },
+        "description": "JSONPlaceholder mô phỏng thao tác tạo mới và không lưu dữ liệu thật."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status code là 201', () => pm.response.to.have.status(201));",
+            "pm.test('Phản hồi có id mới', () => pm.expect(pm.response.json()).to.have.property('id'));",
+            "pm.test('Dữ liệu title được phản hồi đúng', () => pm.expect(pm.response.json().title).to.eql('Bài thực hành Postman'));",
+            "pm.test('Dữ liệu userId được phản hồi đúng', () => pm.expect(pm.response.json().userId).to.eql(1));"
+          ],
+          "type": "text/javascript"
+        }
+      }]
+    },
+    {
+      "name": "04 - PUT cập nhật bài viết",
+      "request": {
+        "method": "PUT",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1,\n  \"title\": \"Tiêu đề đã cập nhật\",\n  \"body\": \"Nội dung đã cập nhật bằng PUT\",\n  \"userId\": 1\n}",
+          "options": {"raw": {"language": "json"}}
+        },
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "1"]
+        },
+        "description": "Mô phỏng cập nhật toàn bộ tài nguyên bằng PUT."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status code là 200', () => pm.response.to.have.status(200));",
+            "pm.test('ID tài nguyên không đổi', () => pm.expect(pm.response.json().id).to.eql(1));",
+            "pm.test('Title đã được cập nhật', () => pm.expect(pm.response.json().title).to.eql('Tiêu đề đã cập nhật'));"
+          ],
+          "type": "text/javascript"
+        }
+      }]
+    },
+    {
+      "name": "05 - DELETE bài viết",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "1"]
+        },
+        "description": "Mô phỏng xóa tài nguyên."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status code là 200', () => pm.response.to.have.status(200));",
+            "pm.test('Phản hồi là object rỗng', () => pm.expect(pm.response.json()).to.eql({}));"
+          ],
+          "type": "text/javascript"
+        }
+      }]
+    },
+    {
+      "name": "06 - GET tài nguyên không tồn tại",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/999",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "999"]
+        },
+        "description": "Kiểm thử tình huống âm: yêu cầu tài nguyên không tồn tại."
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status code là 404', () => pm.response.to.have.status(404));",
+            "pm.test('Phản hồi là object rỗng', () => pm.expect(pm.response.json()).to.eql({}));"
+          ],
+          "type": "text/javascript"
+        }
+      }]
+    }
+  ],
+  "variable": [{"key": "base_url", "value": "https://jsonplaceholder.typicode.com"}]
+}
+

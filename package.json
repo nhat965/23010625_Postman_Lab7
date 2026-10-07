@@ -1,0 +1,14 @@
+{
+  "name": "postman-api-testing-23010625",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bài thực hành kiểm thử REST API bằng Postman và Newman",
+  "scripts": {
+    "test": "newman run postman/JSONPlaceholder.postman_collection.json -e postman/JSONPlaceholder.postman_environment.json --reporters cli,htmlextra --reporter-htmlextra-export reports/newman-report.html --reporter-htmlextra-title=\"Postman API Testing - 23010625\"",
+    "report:serve": "node scripts/serve-report.cjs"
+  },
+  "devDependencies": {
+    "newman": "^6.2.1",
+    "newman-reporter-htmlextra": "^1.23.1"
+  }
+}
