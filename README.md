@@ -97,44 +97,68 @@ npm run report:serve
 
 Sau đó mở `http://127.0.0.1:8765`.
 
-## 7. Kết quả thực hiện
+## 7. Kết quả kiểm thử trên Postman
 
-Lần chạy xác minh lại trực tiếp bằng Postman Monitor ngày 07/10/2026 cho kết quả:
+Collection đã được chạy lại trực tiếp bằng Postman. Kết quả tổng thể: **6 request, 20 assertion, 0 failure**.
 
-| Chỉ số | Kết quả |
-|---|---:|
-| Iteration | 1 |
-| Request đã chạy | 6 |
-| Request thất bại | 0 |
-| Test script đã chạy | 6 |
-| Assertion đã chạy | 20 |
-| Assertion thất bại | 0 |
-| Thời gian monitor run | khoảng 2,1 giây |
-| Tổng response latency | 1218 ms |
-| Thời gian phản hồi trung bình | khoảng 203 ms |
+### 7.1. GET /posts/1 — Lấy chi tiết bài viết
 
-### 7.1. Tổng quan kết quả Newman
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **285 ms**
+- Assertions: **5/5 PASS**
 
-![Tổng quan kết quả chạy collection](output/playwright/newman-summary.png)
+![GET posts 1 - Postman test result](output/playwright/get-post-details.png)
 
-### 7.2. Chi tiết request GET và các assertion
+### 7.2. GET /posts?userId=1 — Lọc bài viết theo userId
 
-Ảnh dưới thể hiện request `GET /posts/1`, response `200 OK`, response body và 5/5 assertion đạt.
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **95 ms**
+- Assertions: **4/4 PASS**
 
-![Chi tiết request GET posts 1](output/playwright/get-post-details.png)
+### 7.3. POST /posts — Tạo bài viết
 
-### 7.3. Kết quả từng yêu cầu kiểm thử
+- Kết quả mong đợi: `201 Created`
+- Kết quả thực tế: `201 Created`
+- Response time: **365 ms**
+- Assertions: **4/4 PASS**
 
-| STT | Request | HTTP status thực tế | Response time | Assertion | Kết quả |
-|---:|---|---:|---:|---:|---|
-| 1 | `GET /posts/1` | 200 | 285 ms | 5/5 | PASS |
-| 2 | `GET /posts?userId=1` | 200 | 95 ms | 4/4 | PASS |
-| 3 | `POST /posts` | 201 | 365 ms | 4/4 | PASS |
-| 4 | `PUT /posts/1` | 200 | 188 ms | 3/3 | PASS |
-| 5 | `DELETE /posts/1` | 200 | 187 ms | 2/2 | PASS |
-| 6 | `GET /posts/999` | 404 | 98 ms | 2/2 | PASS |
+### 7.4. PUT /posts/1 — Cập nhật bài viết
 
-> Mã `404` ở test số 6 là kết quả mong đợi của kiểm thử âm nên test vẫn **PASS**.
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **188 ms**
+- Assertions: **3/3 PASS**
+
+### 7.5. DELETE /posts/1 — Xóa bài viết
+
+- Kết quả mong đợi: `200 OK`
+- Kết quả thực tế: `200 OK`
+- Response time: **187 ms**
+- Assertions: **2/2 PASS**
+
+### 7.6. GET /posts/999 — Negative test
+
+- Kết quả mong đợi: `404 Not Found`
+- Kết quả thực tế: `404 Not Found`
+- Response time: **98 ms**
+- Assertions: **2/2 PASS**
+- Đây là kiểm thử âm nên response `404` là kết quả đúng và testcase được tính **PASS**.
+
+### 7.7. Tổng quan Collection Run
+
+![Postman/Newman collection test summary](output/playwright/newman-summary.png)
+
+| STT | Request | Status | Assertions | Kết quả |
+|---:|---|---:|---:|---|
+| 1 | `GET /posts/1` | 200 | 5/5 | PASS |
+| 2 | `GET /posts?userId=1` | 200 | 4/4 | PASS |
+| 3 | `POST /posts` | 201 | 4/4 | PASS |
+| 4 | `PUT /posts/1` | 200 | 3/3 | PASS |
+| 5 | `DELETE /posts/1` | 200 | 2/2 | PASS |
+| 6 | `GET /posts/999` | 404 | 2/2 | PASS |
+| | **Tổng** | | **20/20** | **PASS** |
 
 ## 8. Nhận xét
 
