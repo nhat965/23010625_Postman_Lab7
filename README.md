@@ -99,7 +99,7 @@ Sau đó mở `http://127.0.0.1:8765`.
 
 ## 7. Kết quả thực hiện
 
-Lần chạy xác minh ngày 07/10/2026 cho kết quả:
+Lần chạy xác minh lại trực tiếp bằng Postman Monitor ngày 07/10/2026 cho kết quả:
 
 | Chỉ số | Kết quả |
 |---|---:|
@@ -109,8 +109,9 @@ Lần chạy xác minh ngày 07/10/2026 cho kết quả:
 | Test script đã chạy | 6 |
 | Assertion đã chạy | 20 |
 | Assertion thất bại | 0 |
-| Tổng thời gian | 2,4 giây |
-| Thời gian phản hồi trung bình | 331 ms |
+| Thời gian monitor run | khoảng 2,1 giây |
+| Tổng response latency | 1218 ms |
+| Thời gian phản hồi trung bình | khoảng 203 ms |
 
 ### 7.1. Tổng quan kết quả Newman
 
@@ -121,6 +122,19 @@ Lần chạy xác minh ngày 07/10/2026 cho kết quả:
 Ảnh dưới thể hiện request `GET /posts/1`, response `200 OK`, response body và 5/5 assertion đạt.
 
 ![Chi tiết request GET posts 1](output/playwright/get-post-details.png)
+
+### 7.3. Kết quả từng yêu cầu kiểm thử
+
+| STT | Request | HTTP status thực tế | Response time | Assertion | Kết quả |
+|---:|---|---:|---:|---:|---|
+| 1 | `GET /posts/1` | 200 | 285 ms | 5/5 | PASS |
+| 2 | `GET /posts?userId=1` | 200 | 95 ms | 4/4 | PASS |
+| 3 | `POST /posts` | 201 | 365 ms | 4/4 | PASS |
+| 4 | `PUT /posts/1` | 200 | 188 ms | 3/3 | PASS |
+| 5 | `DELETE /posts/1` | 200 | 187 ms | 2/2 | PASS |
+| 6 | `GET /posts/999` | 404 | 98 ms | 2/2 | PASS |
+
+> Mã `404` ở test số 6 là kết quả mong đợi của kiểm thử âm nên test vẫn **PASS**.
 
 ## 8. Nhận xét
 
