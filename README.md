@@ -34,9 +34,13 @@ Sau bài thực hành, sinh viên có thể:
 │   └── JSONPlaceholder.postman_environment.json
 ├── reports/
 │   └── newman-report.html
-├── output/playwright/
-│   ├── newman-summary.png
-│   └── get-post-details.png
+├── output/postman/
+│   ├── get-post-detail.png
+│   ├── get-posts-by-user.png
+│   ├── post-create.png
+│   ├── put-update.png
+│   ├── delete-post.png
+│   └── get-not-found.png
 ├── scripts/
 │   └── serve-report.cjs
 ├── package.json
@@ -112,15 +116,41 @@ Lần chạy xác minh ngày 07/10/2026 cho kết quả:
 | Tổng thời gian | 2,4 giây |
 | Thời gian phản hồi trung bình | 331 ms |
 
-### 7.1. Tổng quan kết quả Newman
+### 7.1. GET chi tiết bài viết
 
-![Tổng quan kết quả chạy collection](output/playwright/newman-summary.png)
+Request `GET /posts/1` trả về `200 OK`, đúng bài viết có `id = 1` và đạt 5/5 test.
 
-### 7.2. Chi tiết request GET và các assertion
+![GET chi tiết bài viết](output/postman/get-post-detail.png)
 
-Ảnh dưới thể hiện request `GET /posts/1`, response `200 OK`, response body và 5/5 assertion đạt.
+### 7.2. GET danh sách bài viết theo người dùng
 
-![Chi tiết request GET posts 1](output/playwright/get-post-details.png)
+Request `GET /posts?userId=1` sử dụng query parameter `userId`, trả về danh sách 10 bài viết và đạt 4/4 test.
+
+![GET danh sách bài viết theo userId](output/postman/get-posts-by-user.png)
+
+### 7.3. POST tạo bài viết
+
+Request `POST /posts` trả về `201 Created`, phản hồi có đầy đủ `title`, `body`, `userId` và `id = 101`; 4/4 test đạt.
+
+![POST tạo bài viết](output/postman/post-create.png)
+
+### 7.4. PUT cập nhật bài viết
+
+Request `PUT /posts/1` trả về `200 OK`; tiêu đề và nội dung trong response đã được cập nhật, 3/3 test đạt.
+
+![PUT cập nhật bài viết](output/postman/put-update.png)
+
+### 7.5. DELETE bài viết
+
+Request `DELETE /posts/1` trả về `200 OK` và đạt 2/2 test.
+
+![DELETE bài viết](output/postman/delete-post.png)
+
+### 7.6. Kiểm tra tài nguyên không tồn tại
+
+Request `GET /posts/999` trả về `404 Not Found` đúng như mong đợi của ca kiểm thử âm và đạt 2/2 test.
+
+![GET tài nguyên không tồn tại](output/postman/get-not-found.png)
 
 ## 8. Nhận xét
 
@@ -133,4 +163,3 @@ Lần chạy xác minh ngày 07/10/2026 cho kết quả:
 ## 9. Kết luận
 
 Bộ kiểm thử đã bao phủ bốn phương thức HTTP cơ bản, query parameter, request body, status code, cấu trúc/nội dung response và một tình huống âm. Kết quả thực tế đạt **20/20 assertion**, không có request thất bại. Collection và environment trong repo có thể import trực tiếp vào Postman để kiểm tra lại.
-
